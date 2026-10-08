@@ -75,24 +75,6 @@
     toastTimer = setTimeout(function () { t.hidden = true; }, 2500);
   }
 
-  /* ---------- шапка: полоса категорий + меню ---------- */
-  function initHeader() {
-    var menu = $('#catsMenu');
-    menu.innerHTML = CATEGORIES.map(function (c) {
-      return '<a href="#/cat/' + c.slug + '" role="menuitem">' + ICONS[c.icon] + '<span>' + esc(c.name) + '</span></a>';
-    }).join('');
-
-    var btn = $('#catsBtn');
-    btn.addEventListener('click', function (e) {
-      e.stopPropagation();
-      var open = menu.classList.toggle('open');
-      btn.setAttribute('aria-expanded', open ? 'true' : 'false');
-    });
-    document.addEventListener('click', function (e) {
-      if (!menu.contains(e.target)) { menu.classList.remove('open'); btn.setAttribute('aria-expanded', 'false'); }
-    });
-    menu.addEventListener('click', function () { menu.classList.remove('open'); });
-  }
   /* ---------- карточка ---------- */
   function adCard(ad) {
     var a = el('a', 'ad-card');
@@ -280,13 +262,6 @@
   }
 
   document.addEventListener('DOMContentLoaded', function () {
-    initHeader();
-    $('#searchForm').onsubmit = function (e) {
-      e.preventDefault();
-      filters.q = $('#searchInput').value.trim();
-      if (location.hash !== '#/' && location.hash !== '') location.hash = '#/';
-      route();
-    };
     window.addEventListener('hashchange', route);
     route();
   });

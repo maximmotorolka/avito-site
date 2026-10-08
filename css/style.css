@@ -152,30 +152,6 @@ body {
 .city-btn svg { width: 20px; height: 20px; color: var(--text-secondary); }
 .city-btn .chev { width: 16px; height: 16px; color: var(--text-secondary); }
 
-/* --- поиск --- */
-.searchbar {
-  flex: 1 1 auto; max-width: 600px; min-width: 0;
-  display: flex; align-items: center; gap: 4px;
-  background: var(--bg-control); border-radius: var(--r-24);
-  padding: 4px; position: relative;
-}
-.searchbar:focus-within { background: var(--bg-control-hover); }
-.cats-btn {
-  display: inline-flex; align-items: center; gap: 8px; flex: 0 0 auto;
-  height: 40px; padding: 0 14px; border-radius: 20px;
-  font-size: var(--fs-m); color: var(--text-primary); white-space: nowrap;
-}
-.cats-btn:hover { background: var(--bg-control-pressed); }
-.cats-btn svg { width: 20px; height: 20px; }
-.cats-btn .chev { width: 14px; height: 14px; color: var(--text-secondary); }
-.searchbar input[type="search"] {
-  flex: 1 1 auto; min-width: 60px; border: 0; background: transparent;
-  font-size: var(--fs-m); height: 40px; padding: 0 8px; outline: none;
-  -webkit-appearance: none;
-}
-.searchbar input[type="search"]::placeholder { color: var(--text-secondary); }
-.searchbar input[type="search"]::-webkit-search-cancel-button { -webkit-appearance: none; }
-
 /* --- правые действия --- */
 .header-actions { display: flex; align-items: center; gap: 4px; margin-left: auto; flex: 0 0 auto; }
 .h-link {
@@ -194,20 +170,6 @@ body {
 }
 .post-btn:hover { background: var(--btn-primary-hover); }
 .post-btn svg { width: 20px; height: 20px; }
-
-/* --- дропдаун "Все категории" --- */
-.cats-menu {
-  display: none; position: absolute; top: calc(100% + 8px); left: 4px; z-index: 60;
-  width: 280px; background: #fff; border: 1px solid var(--border-default);
-  border-radius: 20px; box-shadow: 0 8px 24px rgba(0,0,0,.12); padding: 8px;
-}
-.cats-menu.open { display: block; }
-.cats-menu a {
-  display: flex; align-items: center; gap: 10px; padding: 10px 12px;
-  border-radius: 12px; font-size: var(--fs-m); color: var(--text-primary);
-}
-.cats-menu a:hover { background: var(--bg-control); }
-.cats-menu svg { width: 22px; height: 22px; color: var(--text-secondary); flex: 0 0 auto; }
 
 /* ============================ кнопки ============================ */
 .btn {
@@ -374,8 +336,6 @@ main.container#app { padding-top: 20px; padding-bottom: 56px; min-height: 60vh; 
 }
 @media (max-width: 860px) {
   .logo .logo-word { display: none; }
-  .searchbar { max-width: none; }
-  .cats-btn .txt { display: none; }
   .post-btn .txt { display: none; }
   .post-btn { padding: 0 14px; }
 }
