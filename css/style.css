@@ -315,6 +315,37 @@ main.container#app { padding-top: 20px; padding-bottom: 56px; min-height: 60vh; 
 .footer-bottom .note { color: var(--text-disabled); }
 .admin-link { color: var(--text-disabled); }
 
+/* ============================ аккаунт: регистрация / вход ============================ */
+.user-widget { position: relative; }
+.avatar-circle {
+  border-radius: 50%; background: var(--bg-control); overflow: hidden;
+  display: flex; align-items: center; justify-content: center; flex: 0 0 auto;
+}
+.avatar-circle img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.avatar-circle.av-init { color: var(--text-secondary); font-weight: 700; font-size: 22px; }
+.user-widget .avatar-circle { width: 32px; height: 32px; }
+.user-name { max-width: 150px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.user-menu {
+  display: none; position: absolute; top: calc(100% + 8px); right: 0; z-index: 70;
+  min-width: 190px; background: #fff; border: 1px solid var(--border-default);
+  border-radius: 16px; box-shadow: 0 8px 24px rgba(0,0,0,.12); padding: 6px;
+}
+.user-menu.open { display: block; }
+.user-menu .menu-item { display: block; padding: 10px 14px; border-radius: 10px; font-size: var(--fs-m); color: var(--text-primary); }
+.user-menu .menu-item:hover { background: var(--bg-control); }
+
+.auth-card { max-width: 460px; margin-top: 24px; }
+.auth-avatar-big { display: flex; justify-content: center; margin-bottom: 16px; }
+.auth-avatar-big .avatar-circle { width: 96px; height: 96px; }
+.auth-avatar-big .avatar-circle.av-init { font-size: 40px; }
+.avatar-pick { display: flex; flex-direction: column; align-items: center; gap: 8px; margin-bottom: 20px; cursor: pointer; }
+.avatar-pick .avatar-circle { width: 96px; height: 96px; border: 2px dashed var(--border-hover); background: transparent; }
+.avatar-pick .avatar-circle img { width: 100%; height: 100%; object-fit: cover; }
+.avatar-pick.has-photo .avatar-circle { border: 2px solid transparent; background: var(--bg-control); }
+.avatar-hint { font-size: var(--fs-s); color: var(--text-secondary); }
+.auth-note { margin-top: 16px; font-size: var(--fs-s); color: var(--text-secondary); text-align: center; line-height: 20px; }
+.auth-note a { color: var(--text-primary); text-decoration: underline; }
+
 /* ============================ toast ============================ */
 .toast {
   position: fixed; left: 50%; bottom: 32px; transform: translateX(-50%);
