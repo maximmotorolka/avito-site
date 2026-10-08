@@ -1,8 +1,8 @@
 (function () {
   'use strict';
 
-  // SHA-256 от пароля администратора. Текущий пароль: site-admin-2026
-  var PASS_HASH = 'daa01393303494259e015e9c3571c3fcf2a704400333fd2a38c1fd778e2967e2';
+  // SHA-256 от пароля администратора
+  var PASS_HASH = 'a5ac2acb728cba4a71c7f4436258954e3188adb7a9708f0ef40db7d2190222b4';
   var LS_ADS = 'site_ads_local';
   var LS_HIDDEN = 'site_ads_hidden';
 
