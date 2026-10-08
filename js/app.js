@@ -87,19 +87,6 @@
     return a;
   }
 
-  function renderCatsNav(page, slug) {
-    var nav = $('#catNav');
-    nav.innerHTML = '';
-    var all = el('a', page === '' ? 'active' : '', 'Все');
-    all.href = '#/';
-    nav.appendChild(all);
-    CATEGORIES.forEach(function (c) {
-      var a = el('a', (page === 'cat' && slug === c.slug) ? 'active' : '', c.name);
-      a.href = '#/cat/' + c.slug;
-      nav.appendChild(a);
-    });
-  }
-
   function renderFeed(app, cat) {
     var ads = allAds();
     var q = filters.q.toLowerCase().trim();
@@ -278,7 +265,6 @@
     var page = parts[0] || '';
     var app = $('#app');
     app.innerHTML = '';
-    renderCatsNav(page, parts[1]);
     if (page === '') renderFeed(app, null);
     else if (page === 'cat') renderFeed(app, catById(parts[1]) || null);
     else if (page === 'ad') renderAd(app, parts[1]);
