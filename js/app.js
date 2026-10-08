@@ -50,19 +50,22 @@
     String(id).split('').forEach(function (c) { n += c.charCodeAt(0); });
     return NAMES[n % NAMES.length];
   }
-  function photoUrl(ad) { return 'https://picsum.photos/seed/sitenet' + ad.id + '/640/480'; }
+  function photoUrl(ad) { return 'https://picsum.photos/seed/avito' + ad.id + '/640/480'; }
   function svgPhoto(ad) {
-    var cat = catById(ad.cat) || { emoji: '📦' };
+    var cat = catById(ad.cat) || { icon: 'cheap' };
     var h1 = (ad.id * 47) % 360, h2 = (h1 + 40) % 360;
     var svg = '<svg xmlns="http://www.w3.org/2000/svg" width="640" height="480">' +
       '<defs><linearGradient id="g" x1="0" y1="0" x2="1" y2="1">' +
-      '<stop offset="0" stop-color="hsl(' + h1 + ',65%,88%)"/>' +
-      '<stop offset="1" stop-color="hsl(' + h2 + ',65%,72%)"/>' +
+      '<stop offset="0" stop-color="hsl(' + h1 + ',45%,90%)"/>' +
+      '<stop offset="1" stop-color="hsl(' + h2 + ',45%,76%)"/>' +
       '</linearGradient></defs>' +
       '<rect width="640" height="480" fill="url(#g)"/>' +
-      '<text x="320" y="270" font-size="120" text-anchor="middle">' + cat.emoji + '</text></svg>';
+      '<g transform="translate(280,180) scale(3.4)" stroke="#9a978f" stroke-width="0.9" stroke-linecap="round" stroke-linejoin="round" fill="none">' +
+      (ICONS[cat.icon] || '').replace(/<svg[^>]*>/, '').replace('</svg>', '') +
+      '</g></svg>';
     return 'data:image/svg+xml;charset=utf-8,' + encodeURIComponent(svg);
   }
+
   var toastTimer = null;
   function toast(msg) {
     var t = $('#toast');
@@ -72,84 +75,97 @@
     toastTimer = setTimeout(function () { t.hidden = true; }, 2500);
   }
 
+  /* ---------- шапка: полоса категорий + меню ---------- */
+  function initHeader() {
+    var strip = $('#catStrip');
+    var all = el('a', 'strip-item active',
+      '<svg ' + 'stroke="currentColor" stroke-width="1.8" stroke-linecap="round" fill="none" aria-hidden="true" viewBox="0 0 24 24"><path d="M4 6.5h16M4 12h11M4 17.5h14"/></svg><span>Все</span>');
+    all.href = '#/';
+    strip.appendChild(all);
+    CATEGORIES.forEach(function (c) {
+      var a = el('a', 'strip-item', ICONS[c.icon] + '<span>' + esc(c.name) + '</span>');
+      a.href = '#/cat/' + c.slug;
+      a.dataset.slug = c.slug;
+      strip.appendChild(a);
+    });
+
+    var menu = $('#catsMenu');
+    menu.innerHTML = CATEGORIES.map(function (c) {
+      return '<a href="#/cat/' + c.slug + '" role="menuitem">' + ICONS[c.icon] + '<span>' + esc(c.name) + '</span></a>';
+    }).join('');
+
+    var btn = $('#catsBtn');
+    btn.addEventListener('click', function (e) {
+      e.stopPropagation();
+      var open = menu.classList.toggle('open');
+      btn.setAttribute('aria-expanded', open ? 'true' : 'false');
+    });
+    document.addEventListener('click', function (e) {
+      if (!menu.contains(e.target)) { menu.classList.remove('open'); btn.setAttribute('aria-expanded', 'false'); }
+    });
+    menu.addEventListener('click', function () { menu.classList.remove('open'); });
+  }
+  function markStrip(slug) {
+    var items = document.querySelectorAll('#catStrip .strip-item');
+    items.forEach(function (i) { i.classList.toggle('active', i.dataset.slug === slug); });
+  }
+
+  /* ---------- карточка ---------- */
   function adCard(ad) {
-    var a = el('a', 'card');
+    var a = el('a', 'ad-card');
     a.href = '#/ad/' + ad.id;
     var cat = catById(ad.cat);
     a.innerHTML =
-      '<div class="photo"><img loading="lazy" alt=""><span class="badge">' + esc(cat ? cat.name : '') + '</span></div>' +
-      '<div class="card-body"><div class="card-title">' + esc(ad.title) + '</div>' +
-      '<div class="price">' + fmtPrice(ad) + '</div>' +
-      '<div class="meta"><span>' + esc(ad.city) + '</span><span>' + fmtDate(ad.ts) + '</span></div></div>';
+      '<div class="ad-card-photo"><img loading="lazy" alt=""></div>' +
+      '<div class="ad-card-title">' + esc(ad.title) + '</div>' +
+      '<div class="ad-card-price">' + fmtPrice(ad) + '</div>' +
+      '<div class="ad-card-meta">' + esc(ad.city) + '<span class="dot">·</span>' + fmtDate(ad.ts) + '</div>';
     var img = a.querySelector('img');
     img.src = photoUrl(ad);
     img.onerror = function () { this.onerror = null; this.src = svgPhoto(ad); };
     return a;
   }
 
+  /* ---------- лента ---------- */
   function renderFeed(app, cat) {
+    markStrip(cat ? cat.slug : '');
     var ads = allAds();
     var q = filters.q.toLowerCase().trim();
     var list = ads.filter(function (a) {
       if (cat && a.cat !== cat.slug) return false;
+      if (filters.pmin !== '' && Number(a.price) < Number(filters.pmin)) return false;
+      if (filters.pmax !== '' && Number(a.price) > Number(filters.pmax)) return false;
       if (q && (a.title + ' ' + a.desc + ' ' + a.city).toLowerCase().indexOf(q) === -1) return false;
-      if (filters.pmin !== '' && a.price < Number(filters.pmin)) return false;
-      if (filters.pmax !== '' && a.price > Number(filters.pmax)) return false;
       return true;
     });
     if (filters.sort === 'cheap') list.sort(function (a, b) { return a.price - b.price; });
     else if (filters.sort === 'exp') list.sort(function (a, b) { return b.price - a.price; });
     else list.sort(function (a, b) { return b.ts - a.ts; });
 
-    if (!cat && !q) {
-      var hero = el('section', 'hero',
-        '<h1>Что вы ищете сегодня?</h1>' +
-        '<p>Более ' + ads.length + ' объявлений в Москве и по всей России</p>' +
-        '<div class="chips"></div>');
-      var chips = hero.querySelector('.chips');
-      ['iPhone', 'Квартира', 'Toyota', 'Гитара', 'Диван', 'Котята'].forEach(function (c) {
-        var b = el('a', 'chip', c);
-        b.href = '#/';
-        b.onclick = function (e) {
-          e.preventDefault();
-          filters.q = c;
-          $('#searchInput').value = c;
-          route();
-        };
-        chips.appendChild(b);
-      });
-      app.appendChild(hero);
-      app.appendChild(el('h2', 'section-title', 'Категории'));
-      var grid = el('div', 'cat-grid');
-      CATEGORIES.forEach(function (c) {
-        var count = ads.filter(function (a) { return a.cat === c.slug; }).length;
-        var card = el('a', 'cat-card',
-          '<div class="cat-emoji">' + c.emoji + '</div><div>' + c.name + '</div><small>' + count + ' объявл.</small>');
-        card.href = '#/cat/' + c.slug;
-        grid.appendChild(card);
-      });
-      app.appendChild(grid);
-      app.appendChild(el('h2', 'section-title', 'Свежие объявления'));
-    } else {
-      app.appendChild(el('h1', 'section-title',
-        (cat ? esc(cat.name) : 'Поиск: «' + esc(filters.q) + '»') + ' — ' + list.length));
-    }
+    var head = el('div', 'feed-head');
+    head.innerHTML = '<h1>' + esc(cat ? cat.name : (q ? 'Результаты поиска' : 'Свежие объявления')) + '</h1>' +
+      '<span class="feed-count">' + list.length + (list.length < 5 ? ' объявления' : list.length < 20 ? ' объявления' : ' объявлений') + '</span>';
+    app.appendChild(head);
 
-    var bar = el('div', 'feed-bar');
-    bar.appendChild(el('div', 'count', list.length ? 'Найдено: ' + list.length : ''));
-    var right = el('div', 'filters',
-      '<input type="number" id="fMin" placeholder="Цена от" value="' + esc(filters.pmin) + '">' +
-      '<input type="number" id="fMax" placeholder="Цена до" value="' + esc(filters.pmax) + '">' +
-      '<select id="fSort">' +
+    var f = el('div', 'filters');
+    f.innerHTML =
+      '<label>Цена, ₽: <input type="number" id="fMin" min="0" placeholder="от" value="' + esc(filters.pmin) + '"></label>' +
+      '<label>— <input type="number" id="fMax" min="0" placeholder="до" value="' + esc(filters.pmax) + '"></label>' +
+      '<label>Сортировка: <select id="fSort">' +
       '<option value="new"' + (filters.sort === 'new' ? ' selected' : '') + '>Сначала новые</option>' +
-      '<option value="cheap"' + (filters.sort === 'cheap' ? ' selected' : '') + '>Сначала дешевле</option>' +
-      '<option value="exp"' + (filters.sort === 'exp' ? ' selected' : '') + '>Сначала дороже</option>' +
-      '</select>');
-    bar.appendChild(right);
-    app.appendChild(bar);
+      '<option value="cheap"' + (filters.sort === 'cheap' ? ' selected' : '') + '>Сначала дешёвые</option>' +
+      '<option value="exp"' + (filters.sort === 'exp' ? ' selected' : '') + '>Сначала дорогие</option>' +
+      '</select></label>' +
+      '<span class="reset-link" id="fReset">Сбросить фильтры</span>';
+    app.appendChild(f);
     $('#fMin').onchange = function () { filters.pmin = this.value; route(); };
     $('#fMax').onchange = function () { filters.pmax = this.value; route(); };
     $('#fSort').onchange = function () { filters.sort = this.value; route(); };
+    $('#fReset').onclick = function () {
+      filters = { q: '', sort: 'new', pmin: '', pmax: '' };
+      var si = $('#searchInput'); if (si) si.value = '';
+      route();
+    };
 
     if (!list.length) {
       app.appendChild(el('div', 'empty',
@@ -161,7 +177,9 @@
     app.appendChild(g);
   }
 
+  /* ---------- страница объявления ---------- */
   function renderAd(app, id) {
+    markStrip('');
     var ad = getAd(id);
     if (!ad) {
       app.appendChild(el('div', 'empty',
@@ -177,17 +195,20 @@
     var img = left.querySelector('img');
     img.src = photoUrl(ad);
     img.onerror = function () { this.onerror = null; this.src = svgPhoto(ad); };
+    var sn = sellerName(ad.id);
     var right = el('div', 'ad-side');
     right.innerHTML =
-      '<span class="badge" style="position:static;display:inline-block;margin-bottom:10px">' + esc(cat ? cat.name : 'Разное') + '</span>' +
+      '<span class="badge">' + esc(cat ? cat.name : 'Разное') + '</span>' +
       '<h1>' + esc(ad.title) + '</h1>' +
       '<div class="ad-price">' + fmtPrice(ad) + '</div>' +
       '<button class="btn btn-primary phone-btn" type="button">Показать номер</button>' +
       '<div class="phone-reveal">' + esc(ad.phone) + '</div>' +
-      '<div class="ad-meta"><span>📍 ' + esc(ad.city) + '</span><span>🕒 ' + fmtDate(ad.ts) + '</span><span>👁 ' + ad.views + ' просмотров</span></div>' +
-      '<div class="seller"><div class="name">' + esc(sellerName(ad.id)) + '</div>' +
-      '<div class="sub">На site с 2019 года · 12 объявлений</div>' +
-      '<div class="sub"><span class="stars">★ 4.8</span> · 12 отзывов</div></div>';
+      '<div class="ad-meta"><span>' + esc(ad.city) + '</span><span>' + fmtDate(ad.ts) + '</span><span>' + ad.views + ' просмотров</span></div>' +
+      '<div class="seller"><div class="avatar">' + esc(sn.charAt(0)) + '</div><div>' +
+      '<div class="name">' + esc(sn) + '</div>' +
+      '<div class="sub">На Авито с 2019 года · 12 объявлений</div>' +
+      '<div class="sub"><span class="stars">★ 4.8</span> · 12 отзывов</div>' +
+      '</div></div>';
     right.querySelector('.phone-btn').onclick = function () {
       right.querySelector('.phone-reveal').style.display = 'block';
       this.textContent = 'Номер показан';
@@ -197,7 +218,7 @@
     wrap.appendChild(right);
     app.appendChild(wrap);
 
-    var similar = allAds().filter(function (x) { return x.cat === ad.cat && String(x.id) !== String(ad.id); }).slice(0, 3);
+    var similar = allAds().filter(function (x) { return x.cat === ad.cat && String(x.id) !== String(ad.id); }).slice(0, 6);
     if (similar.length) {
       app.appendChild(el('h2', 'section-title', 'Похожие объявления'));
       var g = el('div', 'grid');
@@ -206,23 +227,25 @@
     }
   }
 
+  /* ---------- форма «Разместить объявление» ---------- */
   function renderNew(app) {
+    markStrip('');
     var f = el('div', 'form-card');
     f.innerHTML =
-      '<h1>Подать объявление</h1>' +
+      '<h1>Разместить объявление</h1>' +
       '<p class="sub">Заполните форму — объявление сразу появится в ленте.</p>' +
       '<form id="newAdForm">' +
       '<div class="field"><label>Заголовок *</label><input name="title" maxlength="70" required placeholder="Например: iPhone 14 Pro, 256 GB"></div>' +
       '<div class="row2">' +
       '<div class="field"><label>Категория *</label><select name="cat">' +
-      CATEGORIES.map(function (c) { return '<option value="' + c.slug + '">' + c.emoji + ' ' + c.name + '</option>'; }).join('') +
+      CATEGORIES.map(function (c) { return '<option value="' + c.slug + '">' + c.name + '</option>'; }).join('') +
       '</select></div>' +
       '<div class="field"><label>Цена, ₽ *</label><input name="price" type="number" min="0" required placeholder="25000"></div></div>' +
       '<div class="row2">' +
       '<div class="field"><label>Город *</label><input name="city" required value="Москва"></div>' +
       '<div class="field"><label>Телефон *</label><input name="phone" required placeholder="+7 900 000-00-00"></div></div>' +
       '<div class="field"><label>Описание</label><textarea name="desc" placeholder="Состояние, комплектация, причина продажи…"></textarea></div>' +
-      '<button class="btn btn-primary" type="submit" style="width:100%;height:48px;font-size:16px">Опубликовать</button></form>';
+      '<button class="btn btn-primary" type="submit" style="width:100%;height:52px;font-size:16px">Опубликовать</button></form>';
     app.appendChild(f);
     $('#newAdForm').onsubmit = function (e) {
       e.preventDefault();
@@ -249,15 +272,18 @@
     };
   }
 
+  /* ---------- вход ---------- */
   function renderLogin(app) {
+    markStrip('');
     var f = el('div', 'form-card');
     f.innerHTML =
-      '<h1>Вход</h1>' +
+      '<h1>Вход и регистрация</h1>' +
       '<p class="sub">В демо-версии вход не требуется — личный кабинет появится позже.</p>' +
       '<a class="btn btn-blue" href="#/" style="display:block;text-align:center">На главную</a>';
     app.appendChild(f);
   }
 
+  /* ---------- роутер ---------- */
   function route() {
     var hash = location.hash || '#/';
     var path = hash.replace(/^#\//, '');
@@ -274,13 +300,15 @@
     window.scrollTo(0, 0);
   }
 
-  $('#searchForm').onsubmit = function (e) {
-    e.preventDefault();
-    filters.q = $('#searchInput').value.trim();
-    if (location.hash !== '#/' && location.hash !== '') location.hash = '#/';
+  document.addEventListener('DOMContentLoaded', function () {
+    initHeader();
+    $('#searchForm').onsubmit = function (e) {
+      e.preventDefault();
+      filters.q = $('#searchInput').value.trim();
+      if (location.hash !== '#/' && location.hash !== '') location.hash = '#/';
+      route();
+    };
+    window.addEventListener('hashchange', route);
     route();
-  };
-
-  window.addEventListener('hashchange', route);
-  route();
+  });
 })();

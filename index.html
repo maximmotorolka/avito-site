@@ -3,61 +3,117 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>site — доска объявлений</title>
-<meta name="description" content="site — доска объявлений: авто, недвижимость, работа, электроника и всё для дома.">
+<title>Авито | Объявления в России: купить, продать, снять — демо-клон</title>
+<meta name="description" content="Демо-доска объявлений в дизайн-системе Авито: авто, недвижимость, работа, электроника и всё для дома.">
 <link rel="icon" type="image/svg+xml" href="favicon.svg">
 <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
-<header class="topbar">
-  <div class="container topbar-inner">
-    <a class="logo" href="#/">site</a>
-    <a class="city" href="#/">Москва <span class="caret">▾</span></a>
-    <form class="search" id="searchForm" autocomplete="off">
-      <input type="search" id="searchInput" placeholder="Поиск по объявлениям" aria-label="Поиск">
-      <button type="submit">Найти</button>
-    </form>
-    <div class="top-actions">
-      <a class="btn btn-ghost" href="#/login">Войти</a>
-      <a class="btn btn-primary" href="#/new">Подать объявление</a>
+
+<header class="site-header">
+  <!-- верхняя служебная строка -->
+  <div class="header-utility">
+    <div class="container">
+      <a href="#" class="opt">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 20V8l8-4 8 4v12"/><path d="M2.5 20h19"/><path d="M9 20v-5h6v5"/></svg>
+        Для бизнеса
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="width:12px;height:12px"><path d="M6 9l6 6 6-6"/></svg>
+      </a>
+      <a href="#" class="opt">Карьера в Авито</a>
+      <a href="#" class="opt">Помощь</a>
+      <a href="#" class="opt">Каталоги
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="width:12px;height:12px"><path d="M6 9l6 6 6-6"/></svg>
+      </a>
+      <a href="#" class="opt">#яПомогаю</a>
+    </div>
+  </div>
+
+  <!-- основная строка: логотип, город, поиск, действия -->
+  <div class="header-main">
+    <div class="container">
+      <a class="logo" href="#/" title="Авито — демо-клон" aria-label="На главную">
+        <svg class="logo-mark" width="30" height="30" viewBox="0 0 30 30" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <path fill="#04E061" d="M 8.305 26.167 a 8.305 8.305 0 1 0 0 -16.61 a 8.305 8.305 0 0 0 0 16.61 Z"/>
+          <path fill="#FF4053" d="M 22.708 25.12 a 5.017 5.017 0 1 0 0 -10.035 a 5.017 5.017 0 0 0 0 10.035 Z"/>
+          <path fill="#965EEB" d="M 9.892 8.48 a 3.106 3.106 0 1 0 0 -6.211 a 3.106 3.106 0 0 0 0 6.211 Z"/>
+          <path fill="#0AF" d="M 20.757 14.004 a 6.752 6.752 0 1 0 0 -13.504 a 6.752 6.752 0 0 0 0 13.504 Z"/>
+        </svg>
+        <svg class="logo-word" width="73" height="30" viewBox="0 0 73 30" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <path fill="#000" d="M 9.664 1.08 L 0.927 23.891 H 5.62 l 1.796 -4.767 h 9.27 l 1.804 4.767 h 4.658 L 14.465 1.079 h -4.8 Z m -0.637 13.858 l 3.051 -8.026 l 3.04 8.026 H 9.027 Z M 28.757 18.009 l -3.79 -10.143 h -4.476 l 6.103 16.026 h 4.438 l 5.995 -16.026 H 32.55 l -3.793 10.143 Z M 42.658 7.866 h -4.26 v 16.026 h 4.26 V 7.866 Z M 40.526 6.711 a 3.106 3.106 0 1 0 0 -6.211 a 3.106 3.106 0 0 0 0 6.211 Z M 51.102 3.59 h -4.25 V 7.84 h -2.49 V 11.7 h 2.49 v 6.81 c 0 3.863 2.13 5.524 5.127 5.524 a 7.338 7.338 0 0 0 2.947 -0.576 v -3.97 a 4.755 4.755 0 0 1 -1.588 0.289 c -1.302 0 -2.24 -0.506 -2.24 -2.24 V 11.7 h 3.828 V 7.878 h -3.824 V 3.59 Z M 63.883 7.576 a 8.305 8.305 0 1 0 -0.007 16.61 a 8.305 8.305 0 0 0 0.007 -16.61 Z m 0 12.36 a 4.044 4.044 0 1 1 4.04 -4.044 a 4.036 4.036 0 0 1 -4.04 4.029 v 0.015 Z"/>
+        </svg>
+      </a>
+
+      <button class="city-btn" type="button" title="Город (демо)">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 21.5S5 15.8 5 10a7 7 0 0 1 14 0c0 5.8-7 11.5-7 11.5z"/><circle cx="12" cy="10" r="2.6"/></svg>
+        <span class="city-name">Москва</span>
+        <svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg>
+      </button>
+
+      <form class="searchbar" id="searchForm" autocomplete="off" role="search">
+        <button class="cats-btn" type="button" id="catsBtn" aria-haspopup="true" aria-expanded="false">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><path d="M4 6.5h16M4 12h11M4 17.5h14"/></svg>
+          <span class="txt">Все категории</span>
+          <svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg>
+        </button>
+        <input type="search" id="searchInput" placeholder="Поиск по Авито" aria-label="Поиск по объявлениям">
+        <button class="find-btn" type="submit">Найти</button>
+        <div class="cats-menu" id="catsMenu" role="menu"></div>
+      </form>
+
+      <div class="header-actions">
+        <a class="h-link" href="#" title="Избранное">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 20.3S4.5 15.6 4.5 10.1A4.4 4.4 0 0 1 12 7.6a4.4 4.4 0 0 1 7.5 2.5c0 5.5-7.5 10.2-7.5 10.2z"/></svg>
+          <span class="txt">Избранное</span>
+        </a>
+        <a class="h-link" href="#" title="Корзина">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 5h2l2.2 10.6a1.5 1.5 0 0 0 1.5 1.2h7.4a1.5 1.5 0 0 0 1.5-1.2L20.5 8H7"/><circle cx="10" cy="20" r="1.3"/><circle cx="17" cy="20" r="1.3"/></svg>
+          <span class="txt">Корзина</span>
+        </a>
+        <a class="h-link" href="#/login" title="Вход и регистрация">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="5.5" y="10.5" width="13" height="9.5" rx="2"/><path d="M8.5 10.5V8a3.5 3.5 0 0 1 7 0v2.5"/></svg>
+          <span class="txt">Вход и регистрация</span>
+        </a>
+        <a class="post-btn" href="#/new">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg>
+          <span class="txt">Разместить объявление</span>
+        </a>
+      </div>
     </div>
   </div>
 </header>
 
+<!-- полоса категорий (заполняется скриптом) -->
+<nav class="strip" aria-label="Категории">
+  <div class="container" id="catStrip"></div>
+</nav>
+
 <main class="container" id="app"></main>
 
-<footer class="footer">
+<footer class="site-footer">
   <div class="container">
-    <div class="footer-cols">
-      <div>
-        <div class="footer-title">О сервисе</div>
-        <a href="#/">О нас</a>
-        <a href="#/">Как это работает</a>
-        <a href="#/">Правила сервиса</a>
-      </div>
-      <div>
-        <div class="footer-title">Популярные категории</div>
-        <a href="#/cat/auto">Авто</a>
-        <a href="#/cat/realty">Недвижимость</a>
-        <a href="#/cat/work">Работа</a>
-        <a href="#/cat/electronics">Электроника</a>
-      </div>
-      <div>
-        <div class="footer-title">Помощь</div>
-        <a href="#/">Поддержка</a>
-        <a href="#/">Безопасная сделка</a>
-        <a href="#/">Сообщить о нарушении</a>
-      </div>
-      <div>
-        <div class="footer-title">Для продавцов</div>
-        <a href="#/new">Подать объявление</a>
-        <a href="#/">Продвижение</a>
-        <a href="#/">Тарифы</a>
-      </div>
+    <div class="footer-top">
+      <a href="#">Помощь</a>
+      <a href="#">Безопасность</a>
+      <a href="#">Реклама на сайте</a>
+      <a href="#">О компании</a>
+      <a href="#">Карьера</a>
+      <a href="#">Авито Журнал</a>
+      <a href="#">Блог</a>
+      <a href="#">#яПомогаю</a>
+      <a href="#">Приложение</a>
+      <a href="#">Регионы</a>
     </div>
     <div class="footer-bottom">
-      <span>© 2026 site — демо-доска объявлений в стиле Avito (не связана с Avito)</span>
-      <a href="/admin.html" class="admin-link">Для администратора</a>
+      <a href="#/">Свежие объявления</a>
+      <a href="#/">Популярные запросы</a>
+      <span>Авито — сайт объявлений России</span>
+      <span>© ООО «КЕХ еКоммерц» 2007–2026</span>
+      <a href="#">Правила Авито</a>
+      <a href="#">Политика конфиденциальности</a>
+      <a href="#">Оферта</a>
+      <span>Авито использует рекомендательные технологии.</span>
+      <a class="admin-link" href="admin.html">Для администратора</a>
+      <span class="note">Демо-клон в учебных целях. Не связан с Авито.</span>
     </div>
   </div>
 </footer>
