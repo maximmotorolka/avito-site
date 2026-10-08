@@ -216,19 +216,6 @@ body {
 .cats-menu a:hover { background: var(--bg-control); }
 .cats-menu svg { width: 22px; height: 22px; color: var(--text-secondary); flex: 0 0 auto; }
 
-/* ============================ полоса категорий ============================ */
-.strip { background: var(--bg-page); }
-.strip .container { display: flex; align-items: center; gap: 4px; padding-top: 6px; padding-bottom: 10px; overflow-x: auto; scrollbar-width: none; }
-.strip .container::-webkit-scrollbar { display: none; }
-.strip-item {
-  display: inline-flex; align-items: center; gap: 8px; flex: 0 0 auto;
-  padding: 10px 14px; border-radius: 16px;
-  font-size: var(--fs-m); color: var(--text-primary); white-space: nowrap;
-}
-.strip-item:hover { background: var(--bg-control); }
-.strip-item.active { background: var(--bg-control); font-weight: 700; }
-.strip-item svg { width: 22px; height: 22px; flex: 0 0 auto; }
-
 /* ============================ кнопки ============================ */
 .btn {
   display: inline-flex; align-items: center; justify-content: center; gap: 8px;

@@ -77,18 +77,6 @@
 
   /* ---------- шапка: полоса категорий + меню ---------- */
   function initHeader() {
-    var strip = $('#catStrip');
-    var all = el('a', 'strip-item active',
-      '<svg ' + 'stroke="currentColor" stroke-width="1.8" stroke-linecap="round" fill="none" aria-hidden="true" viewBox="0 0 24 24"><path d="M4 6.5h16M4 12h11M4 17.5h14"/></svg><span>Все</span>');
-    all.href = '#/';
-    strip.appendChild(all);
-    CATEGORIES.forEach(function (c) {
-      var a = el('a', 'strip-item', ICONS[c.icon] + '<span>' + esc(c.name) + '</span>');
-      a.href = '#/cat/' + c.slug;
-      a.dataset.slug = c.slug;
-      strip.appendChild(a);
-    });
-
     var menu = $('#catsMenu');
     menu.innerHTML = CATEGORIES.map(function (c) {
       return '<a href="#/cat/' + c.slug + '" role="menuitem">' + ICONS[c.icon] + '<span>' + esc(c.name) + '</span></a>';
@@ -105,11 +93,6 @@
     });
     menu.addEventListener('click', function () { menu.classList.remove('open'); });
   }
-  function markStrip(slug) {
-    var items = document.querySelectorAll('#catStrip .strip-item');
-    items.forEach(function (i) { i.classList.toggle('active', i.dataset.slug === slug); });
-  }
-
   /* ---------- карточка ---------- */
   function adCard(ad) {
     var a = el('a', 'ad-card');
@@ -128,7 +111,6 @@
 
   /* ---------- лента ---------- */
   function renderFeed(app, cat) {
-    markStrip(cat ? cat.slug : '');
     var ads = allAds();
     var q = filters.q.toLowerCase().trim();
     var list = ads.filter(function (a) {
@@ -179,7 +161,6 @@
 
   /* ---------- страница объявления ---------- */
   function renderAd(app, id) {
-    markStrip('');
     var ad = getAd(id);
     if (!ad) {
       app.appendChild(el('div', 'empty',
@@ -229,7 +210,6 @@
 
   /* ---------- форма «Разместить объявление» ---------- */
   function renderNew(app) {
-    markStrip('');
     var f = el('div', 'form-card');
     f.innerHTML =
       '<h1>Разместить объявление</h1>' +
@@ -274,7 +254,6 @@
 
   /* ---------- вход ---------- */
   function renderLogin(app) {
-    markStrip('');
     var f = el('div', 'form-card');
     f.innerHTML =
       '<h1>Вход и регистрация</h1>' +
