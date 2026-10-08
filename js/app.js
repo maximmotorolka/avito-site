@@ -156,7 +156,7 @@
         '<div class="field"><label>Электронная почта *</label><input name="email" type="email" required placeholder="name@example.com"></div>' +
         '<button class="btn btn-primary" type="submit" style="width:100%;height:52px;font-size:16px">Зарегистрироваться</button>' +
       '</form>' +
-      '<p class="auth-note">Аккаунт хранится только в этом браузере (демо).</p>';
+      '<p class="auth-note">Добро пожаловать</p>';
     app.appendChild(f);
     var avatarData = null;
     var circle = document.getElementById('avatarCircle');
