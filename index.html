@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>site — доска объявлений</title>
+<meta name="description" content="site — доска объявлений: авто, недвижимость, работа, электроника и всё для дома.">
+<link rel="icon" type="image/svg+xml" href="favicon.svg">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<header class="topbar">
+  <div class="container topbar-inner">
+    <a class="logo" href="#/">site</a>
+    <a class="city" href="#/">Москва <span class="caret">▾</span></a>
+    <form class="search" id="searchForm" autocomplete="off">
+      <input type="search" id="searchInput" placeholder="Поиск по объявлениям" aria-label="Поиск">
+      <button type="submit">Найти</button>
+    </form>
+    <div class="top-actions">
+      <a class="btn btn-ghost" href="#/login">Войти</a>
+      <a class="btn btn-primary" href="#/new">Подать объявление</a>
+    </div>
+  </div>
+  <nav class="cats" id="catNav" aria-label="Категории"></nav>
+</header>
+
+<main class="container" id="app"></main>
+
+<footer class="footer">
+  <div class="container">
+    <div class="footer-cols">
+      <div>
+        <div class="footer-title">О сервисе</div>
+        <a href="#/">О нас</a>
+        <a href="#/">Как это работает</a>
+        <a href="#/">Правила сервиса</a>
+      </div>
+      <div>
+        <div class="footer-title">Популярные категории</div>
+        <a href="#/cat/auto">Авто</a>
+        <a href="#/cat/realty">Недвижимость</a>
+        <a href="#/cat/work">Работа</a>
+        <a href="#/cat/electronics">Электроника</a>
+      </div>
+      <div>
+        <div class="footer-title">Помощь</div>
+        <a href="#/">Поддержка</a>
+        <a href="#/">Безопасная сделка</a>
+        <a href="#/">Сообщить о нарушении</a>
+      </div>
+      <div>
+        <div class="footer-title">Для продавцов</div>
+        <a href="#/new">Подать объявление</a>
+        <a href="#/">Продвижение</a>
+        <a href="#/">Тарифы</a>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>© 2026 site — демо-доска объявлений в стиле Avito (не связана с Avito)</span>
+      <a href="/admin.html" class="admin-link">Для администратора</a>
+    </div>
+  </div>
+</footer>
+
+<div id="toast" class="toast" hidden></div>
+
+<script src="js/data.js"></script>
+<script src="js/app.js"></script>
+</body>
+</html>
