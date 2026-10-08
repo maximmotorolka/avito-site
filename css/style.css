@@ -175,13 +175,6 @@ body {
 }
 .searchbar input[type="search"]::placeholder { color: var(--text-secondary); }
 .searchbar input[type="search"]::-webkit-search-cancel-button { -webkit-appearance: none; }
-.find-btn {
-  flex: 0 0 auto; display: inline-flex; align-items: center; justify-content: center;
-  height: 40px; padding: 0 22px; border-radius: 16px;
-  background: var(--btn-primary-bg); color: var(--btn-primary-text);
-  font-size: var(--fs-m); font-weight: 400;
-}
-.find-btn:hover { background: var(--btn-primary-hover); }
 
 /* --- правые действия --- */
 .header-actions { display: flex; align-items: center; gap: 4px; margin-left: auto; flex: 0 0 auto; }
@@ -388,6 +381,5 @@ main.container#app { padding-top: 20px; padding-bottom: 56px; min-height: 60vh; 
 }
 @media (max-width: 600px) {
   .city-btn .city-name { display: none; }
-  .find-btn { padding: 0 14px; }
   .header-main .container { gap: 4px; }
 }
